@@ -4,7 +4,7 @@ export enum RoutesEnum {
 
 export interface IWeather {
   coord: Coord;
-  weather?: (WeatherEntity)[] | null;
+  weather?: (WeatherEntity)[];
   base: string;
   main: Main;
   wind: Wind;
@@ -23,7 +23,7 @@ export interface WeatherEntity {
   id: number;
   main: string;
   description: string;
-  icon?: string;
+  icon: string;
 }
 export interface Main {
   temp: number;
@@ -50,7 +50,6 @@ export interface Sys {
 
 
 // =============ForecastWeather
-
 
 
 export interface ForecastWeather {

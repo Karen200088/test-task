@@ -1,19 +1,26 @@
-import {ChangeEvent, FC, FormEvent, useState} from "react";
+import {FC, FormEvent, ChangeEvent, useState} from "react";
 
-import {useAppDispatch} from "../../shared/hooks/store";
-import {searchValue} from "../../entities/searchCityValue/searchCityValue";
+import {useAppDispatch, useAppSelector} from "../../shared/hooks/store";
+import {searchValue} from "../../entities/searchCityValue/searchCityValueSlice";
+import Button from "../../shared/ui/Button/Button";
+import {changeTemperature} from "../../entities/temperatureSlice/temperatureSlice";
 
 import {HeaderWrapper} from "./Header.styled";
 
 const Header: FC = () => {
 
   const [searchInput, setSearchInput] = useState("Yerevan");
-  const [temperature, setTemperature] = useState("celsius");
 
   const dispatch = useAppDispatch();
 
+  const {temperature} = useAppSelector(state => state.temperatureSlice);
+
   const inputOnChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
+  }
+
+  const changeTemperatureHandler = (temperature: string) => {
+    dispatch(changeTemperature(temperature));
   }
 
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
@@ -26,16 +33,26 @@ const Header: FC = () => {
       <div className="search-form">
         <form onSubmit={onSubmitHandler}>
           <input required type="text" value={searchInput} onChange={inputOnChangeHandler}/>
-          <button type="submit">Search City</button>
+          <Button type="submit">Search City</Button>
         </form>
       </div>
 
       <div className="temperature-switcher">
-        <input type="radio" id="celsius" name="celsius" defaultChecked checked={temperature == "celsius"}/>
-        <label htmlFor="celsius">Celsius</label>
+        <input
+          type="radio"
+          id="celsius"
+          name="celsius"
+          checked={temperature == "metric"}
+          onChange={() => changeTemperatureHandler("metric")}/>
+        <label htmlFor="celsius">°C</label>
 
-        <input type="radio" id="fahrenheit" name="fahrenheit" checked={temperature == "fahrenheit"}/>
-        <label htmlFor="fahrenheit">Fahrenheit</label>
+        <input
+          type="radio"
+          id="fahrenheit"
+          name="fahrenheit"
+          checked={temperature == "imperial"}
+          onChange={() => changeTemperatureHandler("imperial")}/>
+        <label htmlFor="fahrenheit">°F</label>
       </div>
     </HeaderWrapper>
   );

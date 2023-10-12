@@ -10,7 +10,7 @@ import {Loading} from "../../shared/ui/Loading";
 import WeatherByDaysWidget from "../../widget/WeatherByDaysWidget/WeatherByDaysWidget";
 import {addForecastWeather} from "../../entities/forecastWeatherSlice/forecastWeatherSlice";
 
-import {WeatherPageWrapper} from "./WeatherPage.styled";
+import {ErrorMessage, WeatherPageWrapper} from "./WeatherPage.styled";
 
 const WeatherPage: FC = () => {
 
@@ -19,10 +19,12 @@ const WeatherPage: FC = () => {
 
   const dispatch = useAppDispatch();
   const {searchValue} = useAppSelector(state => state.searchValueSlice);
+  const {temperature} = useAppSelector(state => state.temperatureSlice);
+
 
   const getCurrentWeatherData = async() => {
    setLoading(true);
-   const res = await getCurrentWeather(searchValue);
+   const res = await getCurrentWeather(searchValue, temperature);
    const response = await res;
    if (response?.data) {
     dispatch(addCurrentWeatherSlice(response.data));
@@ -36,7 +38,7 @@ const WeatherPage: FC = () => {
   
   const getForecastWeatherData = async() => {
    setLoading(true);
-   const res = await getForecastWeather(searchValue);
+   const res = await getForecastWeather(searchValue, temperature);
    const response = await res;
    if (response?.data) {
      dispatch(addForecastWeather(response.data));
@@ -51,9 +53,9 @@ const WeatherPage: FC = () => {
   useEffect(() => {
     getCurrentWeatherData();
     getForecastWeatherData();
-  },[searchValue])
+  },[searchValue, temperature])
 
-  if (error) return <div>{error}</div>;
+  if (error) return <ErrorMessage>{error}</ErrorMessage>;
   if (loading) return <Loading/>;
 
   return (

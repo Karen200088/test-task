@@ -7,9 +7,9 @@ type ButtonProps = {
     type: "submit" | "button"
 }
 
-const Button: FC<ButtonProps> = ({children}) => {
+const Button: FC<ButtonProps> = ({children, type}) => {
     return (
-        <ButtonStyled>{children}</ButtonStyled>
+        <ButtonStyled type={type}>{children}</ButtonStyled>
     );
 };
 

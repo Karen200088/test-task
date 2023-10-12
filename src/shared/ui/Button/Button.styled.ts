@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 import * as palette from "../../styles/Variables";
 
-export const ButtonStyled = styled.header`
+export const ButtonStyled = styled.button`
   text-align: center;
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 600;
   padding: 10px;
   border-radius: 7px;
